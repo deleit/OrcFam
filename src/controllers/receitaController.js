@@ -51,6 +51,7 @@ class ReceitaController {
     })
   }
 
+  // atualizar regras de negócio:
   static atualizaReceita = (req, res) => {
     let id = req.params.id;
 
@@ -59,6 +60,17 @@ class ReceitaController {
         res.status(500).send({ error: err.message });
       else
         res.status(200).send({ message: 'Receita atualizada com sucesso!' });
+    })
+  }
+
+  static excluiReceita = (req, res) => {
+    let id = req.params.id;
+
+    Receita.findByIdAndRemove(id, (err) => {
+      if (err)
+        res.status(500).send({ error: `Não foi possível excluir a receita: ${err.message}` });
+      else
+        res.status(200).send({ message: 'Receita excluída com sucesso!' });
     })
   }
 }
