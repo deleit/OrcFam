@@ -89,7 +89,7 @@ class ReceitaController {
         res.status(500).send({ error: `Não foi possível excluir a receita: ${err.message}` });
       else
         res.status(200).send({ message: 'Receita excluída com sucesso!' });
-    })
+    });
   }
 }
 

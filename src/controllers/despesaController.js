@@ -80,6 +80,17 @@ class DespesaController {
       });
     });
   }
+
+  static excluiDespesa = (req, res) => {
+    let id = req.params.id;
+
+    Despesa.findByIdAndRemove(id, (err) => {
+      if (err)
+        res.status(500).send({ error: `Não foi possível excluir a receita: ${err.message}` })
+      else
+        res.status(200).send({ message: 'Receita excluída com sucesso!' });
+    });
+  }
 }
 
 export default DespesaController;
