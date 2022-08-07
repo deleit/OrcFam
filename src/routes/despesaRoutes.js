@@ -7,5 +7,6 @@ router
   .get('/despesas', DespesaController.listaDespesas)
   .get('/despesas/:id', DespesaController.listaDespesaPorId)
   .post('/despesas', DespesaController.cadastraDespesa)
+  .put('/despesas/:id', DespesaController.atualizaDespesa)
 
 export default router;

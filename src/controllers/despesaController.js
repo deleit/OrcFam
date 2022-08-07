@@ -49,6 +49,37 @@ class DespesaController {
       }
     });
   }
+
+  static atualizaDespesa = (req, res) => {
+    let id = req.params.id;
+
+    Despesa.findById(id, (err, despesa) => {
+      let data = new Date(req.body.data || despesa.data);
+      let primeiroDiaDoMes = new Date(data.getFullYear(), data.getMonth(), 1);
+      let ultimoDiaDoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0);
+
+      Despesa.find({
+        descricao: req.body.descricao || despesa.descricao,
+        data: {
+          $gte: new Date(primeiroDiaDoMes),
+          $lt: new Date(ultimoDiaDoMes)
+        }
+      }, {}, (error, despesas) => {
+        if (error)
+          res.status(500).send({ error: `Falha ao editar despesa: ${error.message}` });
+        else if (despesas.length === 0) {
+          Despesa.findByIdAndUpdate(id, { $set: req.body }, (err) => {
+            if (err)
+              res.status(500).send({ error: `Falha ao editar despesa: ${error.message}` });
+            else
+              res.status(200).send({ message: 'Despesa atualizada com sucesso!' });
+          });
+        } else {
+          res.status(500).send({ error: 'Falha ao editar despesa: duplicada' });
+        }
+      });
+    });
+  }
 }
 
 export default DespesaController;
