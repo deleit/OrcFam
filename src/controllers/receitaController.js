@@ -10,6 +10,17 @@ class ReceitaController {
     })
   }
 
+  static listaReceitaPorId = (req, res) => {
+    let id = req.params.id;
+
+    Receita.findById(id, (err, receita) => {
+      if (err)
+        res.status(400).send({ error: `ID de receita não localizada: ${err.message}` })
+      else
+        res.status(200).json(receita);
+    });
+  }
+
   static cadastraReceita = (req, res) => {
     let data = new Date(req.body.data);
     let primeiroDiaDoMes = new Date(data.getFullYear(), data.getMonth(), 1);

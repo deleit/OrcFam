@@ -5,6 +5,7 @@ const router = express.Router();
 
 router
   .get('/receitas', ReceitaController.listaReceitas)
+  .get('/receitas/:id', ReceitaController.listaReceitaPorId)
   .post('/receitas', ReceitaController.cadastraReceita)
 
 export default router;
