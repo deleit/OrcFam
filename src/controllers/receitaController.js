@@ -32,10 +32,10 @@ class ReceitaController {
         $gte: new Date(primeiroDiaDoMes),
         $lt: new Date(ultimoDiaDoMes)
       }
-    }, {}, (error, data) => {
+    }, {}, (error, receitas) => {
       if (error) {
         res.status(500).send({ error: `Falha ao cadastrar receita: ${error.message}` });
-      } else if (data.length === 0) {
+      } else if (receitas.length === 0) {
         let receita = new Receita(req.body);
         receita.save((err) => {
           if (err) {
@@ -46,21 +46,40 @@ class ReceitaController {
           }
         })
       } else {
-        res.status(500).send({ error: 'Falha ao cadastrar receita: duplicada' })
+        res.status(500).send({ error: 'Falha ao cadastrar receita: duplicada' });
       }
     })
   }
 
-  // atualizar regras de negócio:
   static atualizaReceita = (req, res) => {
     let id = req.params.id;
 
-    Receita.findByIdAndUpdate(id, { $set: req.body }, (err) => {
-      if (err)
-        res.status(500).send({ error: err.message });
-      else
-        res.status(200).send({ message: 'Receita atualizada com sucesso!' });
-    })
+    Receita.findById(id, (err, receita) => {
+      let data = new Date(req.body.data || receita.data);
+      let primeiroDiaDoMes = new Date(data.getFullYear(), data.getMonth(), 1);
+      let ultimoDiaDoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0);
+
+      Receita.find({
+        descricao: req.body.descricao || receita.descricao,
+        data: {
+          $gte: new Date(primeiroDiaDoMes),
+          $lt: new Date(ultimoDiaDoMes)
+        }
+      }, {}, (error, receitas) => {
+        if (error)
+          res.status(500).send({ error: `Falha ao editar receita: ${error.message}` });
+        else if (receitas.length === 0) {
+          Receita.findByIdAndUpdate(id, { $set: req.body }, (err) => {
+            if (err)
+              res.status(500).send({ error: err.message });
+            else
+              res.status(200).send({ message: 'Receita atualizada com sucesso!' });
+          });
+        } else {
+          res.status(500).send({ error: 'Falha ao editar receita: duplicada' });
+        }
+      });
+    });
   }
 
   static excluiReceita = (req, res) => {
