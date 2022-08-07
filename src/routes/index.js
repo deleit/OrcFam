@@ -1,5 +1,6 @@
 import express from 'express';
 import receitas from './receitaRoutes.js';
+import despesas from './despesaRoutes.js';
 
 const routes = (app) => {
   app.route('/').get((req, res) => {
@@ -8,8 +9,9 @@ const routes = (app) => {
 
   app.use(
     express.json(),
-    receitas
-  )
+    receitas,
+    despesas
+  );
 }
 
 export default routes;

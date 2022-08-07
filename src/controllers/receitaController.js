@@ -4,7 +4,7 @@ class ReceitaController {
   static listaReceitas = (req, res) => {
     Receita.find((err, receitas) => {
       if (err)
-        res.status(500).send({ erro: `Falha ao listar receitas: ${err.message}` });
+        res.status(500).send({ error: `Falha ao listar receitas: ${err.message}` });
       else
         res.status(200).json(receitas)
     })
