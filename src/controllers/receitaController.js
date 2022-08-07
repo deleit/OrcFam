@@ -50,6 +50,17 @@ class ReceitaController {
       }
     })
   }
+
+  static atualizaReceita = (req, res) => {
+    let id = req.params.id;
+
+    Receita.findByIdAndUpdate(id, { $set: req.body }, (err) => {
+      if (err)
+        res.status(500).send({ error: err.message });
+      else
+        res.status(200).send({ message: 'Receita atualizada com sucesso!' });
+    })
+  }
 }
 
 export default ReceitaController;
