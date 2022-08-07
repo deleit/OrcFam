@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/deleit/OrcFam#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

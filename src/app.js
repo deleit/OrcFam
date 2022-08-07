@@ -1,10 +1,15 @@
+import 'dotenv/config';
 import express from 'express';
+import db from './config/dbConnect.js';
+
+db.on('err', console.log.bind(console, 'Erro de conexão'));
+db.once('open', () => console.log('Conexão com o banco de dados efetuada com sucesso!'));
 
 const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send("Olá, mundo")
-})
+  res.send('Olá, mundo');
+});
 
 export default app;
