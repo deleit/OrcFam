@@ -5,5 +5,6 @@ const router = express.Router();
 
 router
   .get('/despesas', DespesaController.listaDespesas)
+  .get('/despesas/:id', DespesaController.listaDespesaPorId)
 
 export default router;

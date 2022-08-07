@@ -9,6 +9,17 @@ class DespesaController {
         res.status(200).json(despesas)
     })
   }
+
+  static listaDespesaPorId = (req, res) => {
+    let id = req.params.id;
+
+    Despesa.findById(id, (err, despesa) => {
+      if (err)
+        res.status(400).send({ error: `ID de despesa não localizada: ${err.message}` });
+      else
+        res.status(200).json(despesa);
+    });
+  }
 }
 
 export default DespesaController;
