@@ -40,11 +40,10 @@ class ReceitaController {
         receita.save((err) => {
           if (err) {
             res.status(500).send({ error: `Falha ao cadastrar receita: ${err.message}` });
-          }
-          else {
+          } else {
             res.status(201).send(receita.toJSON());
           }
-        })
+        });
       } else {
         res.status(500).send({ error: 'Falha ao cadastrar receita: duplicada' });
       }

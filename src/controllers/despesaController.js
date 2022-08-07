@@ -20,6 +20,35 @@ class DespesaController {
         res.status(200).json(despesa);
     });
   }
+
+  static cadastraDespesa = (req, res) => {
+    let data = new Date(req.body.data);
+    let primeiroDiaDoMes = new Date(data.getFullYear(), data.getMonth(), 1);
+    let ultimoDiaDoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0);
+
+    Despesa.find({
+      descricao: req.body.descricao,
+      data: {
+        $gte: new Date(primeiroDiaDoMes),
+        $lt: new Date(ultimoDiaDoMes)
+      }
+    }, {}, (error, despesas) => {
+      if (error) {
+        res.status(500).send({ error: `Falha ao cadastrar: ${error.message}` });
+      } else if (despesas.length === 0) {
+        let despesa = new Despesa(req.body);
+        despesa.save((err) => {
+          if (err) {
+            res.status(500).send({ error: `Falha ao cadastrar despesa: ${err.message}` });
+          } else {
+            res.status(201).send(despesa.toJSON());
+          }
+        });
+      } else {
+        res.status(500).send({ error: 'Falha ao cadastrar despesa: duplicada' });
+      }
+    });
+  }
 }
 
 export default DespesaController;
