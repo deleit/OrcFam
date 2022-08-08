@@ -4,7 +4,6 @@ import DespesaController from '../controllers/despesaController.js';
 const router = express.Router();
 
 router
-  .get('/despesas', DespesaController.listaDespesaPorDescricao)
   .get('/despesas', DespesaController.listaDespesas)
   .get('/despesas/:id', DespesaController.listaDespesaPorId)
   .post('/despesas', DespesaController.cadastraDespesa)

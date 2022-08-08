@@ -2,22 +2,9 @@ import Despesa from "../models/Despesa.js";
 
 class DespesaController {
   static listaDespesas = (req, res) => {
-    Despesa
-      .find()
-      .populate('categoria', '-_id')
-      .exec((err, despesas) => {
-        if (err)
-          res.status(500).send({ error: `Falha ao listar despesas: ${err.message}` });
-        else
-          res.status(200).json(despesas)
-      });
-  }
-  
-  static listaDespesaPorDescricao = (req, res) => {
-    let descricao = req.query.descricao;
-
-    Despesa
-      .find({ descricao: descricao })
+    if (req.query.descricao) {
+      Despesa
+      .find({ descricao: req.query.descricao })
       .populate('categoria', '-_id')
       .exec((err, despesa) => {
         if (err)
@@ -25,6 +12,17 @@ class DespesaController {
         else
           res.status(200).json(despesa);
       });
+    } else {
+      Despesa
+        .find()
+        .populate('categoria', '-_id')
+        .exec((err, despesas) => {
+          if (err)
+            res.status(500).send({ error: `Falha ao listar despesas: ${err.message}` });
+          else
+            res.status(200).json(despesas)
+        });
+    }
   }
 
   static listaDespesaPorId = (req, res) => {

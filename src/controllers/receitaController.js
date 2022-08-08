@@ -2,12 +2,21 @@ import Receita from "../models/Receita.js";
 
 class ReceitaController {
   static listaReceitas = (req, res) => {
-    Receita.find((err, receitas) => {
-      if (err)
-        res.status(500).send({ error: `Falha ao listar receitas: ${err.message}` });
-      else
-        res.status(200).json(receitas)
-    })
+    if (req.query.descricao) {
+      Receita.find({ descricao: req.query.descricao }, (err, receitas) => {
+        if (err)
+          res.status(500).send({ error: `Falha ao listar receitas: ${err.message}` });
+        else
+          res.status(200).json(receitas)
+      });
+    } else {
+      Receita.find((err, receitas) => {
+        if (err)
+          res.status(500).send({ error: `Falha ao listar receitas: ${err.message}` });
+        else
+          res.status(200).json(receitas)
+      });
+    }
   }
 
   static listaReceitaPorId = (req, res) => {
