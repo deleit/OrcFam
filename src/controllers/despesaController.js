@@ -12,6 +12,20 @@ class DespesaController {
           res.status(200).json(despesas)
       });
   }
+  
+  static listaDespesaPorDescricao = (req, res) => {
+    let descricao = req.query.descricao;
+
+    Despesa
+      .find({ descricao: descricao })
+      .populate('categoria', '-_id')
+      .exec((err, despesa) => {
+        if (err)
+          res.status(400).send({ error: `ID de despesa não localizada: ${err.message}` });
+        else
+          res.status(200).json(despesa);
+      });
+  }
 
   static listaDespesaPorId = (req, res) => {
     let id = req.params.id;
