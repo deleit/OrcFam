@@ -86,7 +86,7 @@ class DespesaController {
       }, {}, (error, despesas) => {
         if (error)
           res.status(500).send({ error: `Falha ao editar despesa: ${error.message}` });
-        else if (despesas.length === 0) {
+        else if (despesas.length <= 1) {
           Despesa.findByIdAndUpdate(id, { $set: req.body }, (err) => {
             if (err)
               res.status(500).send({ error: `Falha ao editar despesa: ${error.message}` });

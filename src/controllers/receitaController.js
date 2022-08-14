@@ -30,6 +30,21 @@ class ReceitaController {
     });
   }
 
+  static listaReceitaPorMes = (req, res) => {
+    let ano = req.params.ano;
+    let mes = req.params.mes;
+
+    Receita
+      .find()
+      .byMes(ano, mes)
+      .exec((err, receitas) => {
+        if (err)
+          res.status(500).send({ error: `Falha ao listar receitas: ${err.message}` });
+        else
+          res.status(200).json(receitas)
+      });
+  }
+
   static cadastraReceita = (req, res) => {
     let data = new Date(req.body.data);
     let primeiroDiaDoMes = new Date(data.getFullYear(), data.getMonth(), 1);
@@ -76,7 +91,7 @@ class ReceitaController {
       }, {}, (error, receitas) => {
         if (error)
           res.status(500).send({ error: `Falha ao editar receita: ${error.message}` });
-        else if (receitas.length === 0) {
+        else if (receitas.length <= 1) {
           Receita.findByIdAndUpdate(id, { $set: req.body }, (err) => {
             if (err)
               res.status(500).send({ error: err.message });

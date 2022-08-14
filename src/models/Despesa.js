@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import latinize from "latinize";
 
 const despesaSchema = new mongoose.Schema(
   {
@@ -9,14 +10,12 @@ const despesaSchema = new mongoose.Schema(
     categoria: { type: mongoose.Types.ObjectId, ref: 'Categoria', default: '62f1404215e3c153c95efe9a' }
   },
   {
+    versionKey: false,
     query: {
       byDescricao(descricao) {
-        return this.where({ descricao: new RegExp(descricao, 'iu') })
+        return this.where({ descricao: new RegExp(latinize(descricao), 'iu') })
       }
     }
-  },
-  {
-    versionKey: false
   }
 );
 
