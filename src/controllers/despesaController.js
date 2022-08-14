@@ -40,6 +40,21 @@ class DespesaController {
       });
   }
 
+  static listaDespesaPorMes = (req, res) => {
+    let ano = req.params.ano;
+    let mes = req.params.mes;
+
+    Despesa
+      .find()
+      .byMes(ano, mes)
+      .exec((err, despesas) => {
+        if (err)
+          res.status(500).send({ error: `Falha ao listar despesas: ${err.message}` });
+        else
+          res.status(200).json(despesas)
+      })
+  }
+
   static cadastraDespesa = (req, res) => {
     let data = new Date(req.body.data);
     let primeiroDiaDoMes = new Date(data.getFullYear(), data.getMonth(), 1);
