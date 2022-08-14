@@ -4,14 +4,15 @@ class DespesaController {
   static listaDespesas = (req, res) => {
     if (req.query.descricao) {
       Despesa
-      .find({ descricao: req.query.descricao })
-      .populate('categoria', '-_id')
-      .exec((err, despesa) => {
-        if (err)
-          res.status(400).send({ error: `ID de despesa não localizada: ${err.message}` });
-        else
-          res.status(200).json(despesa);
-      });
+        .find()
+        .byDescricao(req.query.descricao)
+        .populate('categoria', '-_id')
+        .exec((err, despesa) => {
+          if (err)
+            res.status(400).send({ error: `ID de despesa não localizada: ${err.message}` });
+          else
+            res.status(200).json(despesa);
+        });
     } else {
       Despesa
         .find()

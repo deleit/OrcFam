@@ -3,7 +3,7 @@ import Receita from "../models/Receita.js";
 class ReceitaController {
   static listaReceitas = (req, res) => {
     if (req.query.descricao) {
-      Receita.find({ descricao: req.query.descricao }, (err, receitas) => {
+      Receita.find().byDescricao(req.query.descricao).exec((err, receitas) => {
         if (err)
           res.status(500).send({ error: `Falha ao listar receitas: ${err.message}` });
         else
